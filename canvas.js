@@ -4,27 +4,44 @@ var toggleButt = document.getElementById("toggle");
 var ctx = canvas.getContext('2d');
 var toggleOpt = 0;
 
+var oldX = -1;
+var oldY = -1;
+
 var place = function(e){
-    var mouseX = e.x;
-    var mouseY = e.y;
-  
     if(toggleOpt == 0){
 	ctx.fillStyle = "red";
 
 	ctx.beginPath();
-	ctx.arc(mouseX - 5, mouseY - 75, 10, 0, 2 * Math.PI);
+	if(oldX > -1){
+	    ctx.lineTo(oldX, oldY);
+	}
+	ctx.arc(e.offsetX, e.offsetY, 10, 0, 2 * Math.PI);
+	ctx.stroke();
 	ctx.fill();
+
+
     }
     else if(toggleOpt == 1){
 	ctx.fillStyle = "black";
-	
+
 	ctx.beginPath();
-	ctx.arc(mouseX - 5, mouseY - 75, 15, 0, 2 * Math.PI);
+	if(oldX > -1){
+	    ctx.lineTo(oldX, oldY);
+	}
+	ctx.arc(e.offsetX, e.offsetY, 15, 0, 2 * Math.PI);
 	ctx.stroke();
     }
     else{ //if toggleOpt is 2
-	ctx.fillRect(mouseX - 5, mouseY - 75, 55, 45);
+
+	if(oldX > -1){
+	    ctx.lineTo(oldX, oldY);
+	}
+	ctx.stroke();
+	ctx.fillRect(e.offsetX, e.offsetY, 55, 45);
+
     }
+    oldX = e.offsetX;
+    oldY = e.offsetY;
 }
 
 canvas.addEventListener("click", place);
